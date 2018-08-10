@@ -1,0 +1,45 @@
+{
+	"info": {
+		"_postman_id": "b3ed0525-b79d-4ec1-9d32-6dd9234a71c2",
+		"name": "RSA-encrypt-decrypt",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "test",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "KsC7reVKiZdDJK03btWwWWqKr/cRAwY8I9xorfzWScrhJSt/ZNxsIgDBZXzmYeFh156ar7tR8HY3v2TFATCxnbUPE0Wkd1yojxfjUspnD644QAzJIR7ZV5YVpQoMjBaXrryxtSatva6xQ+ywsyq2OYP3+uIKpcg8o03gxW8Y+WTahxzeEYRIhuWbMBaxc49eGvBIG6439kdrYfclm0W00xXIUILZWXKaGqxAI+WyKJbrh0Yh/kCXPonG6ZGS6l2eFKhoHxSwqNgbj8M5oWarOaH8VP6JpNihRKgB3r3TYcCfiqMurDK8dHxU9AcfuTpNFPZR34y7onrRqF+NaCy6aDwrCkLge01OjKFFQry1tJIvjS55tuW0EO8uJfrBhOOOM9r8YSeNbQJc3TeIYOIc0EmP9ovLNEd2eJNsgjbNdQKgVZ9Z15Ow6pbLnoShO5XMi55ciqt6j9bonYWZ0vfqBBAHXj1QfQyFj7JLBZstnWi4JF6PfsdXZwK9+3HIFv6PSNxUXUim1lNu54IPiZIpdWtyDziG77SlokRDvPvpGIrE+3yjf/PJTb1GBQLnR+PZVivXVfaqumh7LU6B1lFiCN1dErFvHyMrZ3E1XhntH7aoYVfIqHdhCVnwoXgYnkR+HSyS7nwR/2RhhHyA2EbppY/9J3SJIBFEXd1sp42xDHY=",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/greeting",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"greeting"
+					]
+				},
+				"description": " http://localhost:8080/greeting"
+			},
+			"response": []
+		}
+	]
+}
