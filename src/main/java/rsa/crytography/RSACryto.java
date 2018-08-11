@@ -46,7 +46,12 @@ public class RSACryto {
 	}
 
 	public static void main(String args[]) {
-		try {
+		test1();
+	}
+	
+	private static void test2() {
+		
+try {
 			
 			RSACryto rsaCryto = new RSACryto();
 			File id_rsa = new File("./id_rsa");

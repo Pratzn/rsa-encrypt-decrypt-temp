@@ -17,6 +17,13 @@ import lombok.extern.java.Log;
 @Log
 @RestController
 public class GreetingController {
+	
+	static {
+		
+		Security.addProvider(new BouncyCastleProvider());
+		log.info("BouncyCastle provider added.");
+		
+	}
 
     private static final String template = "%s";
     private final AtomicLong counter = new AtomicLong();
@@ -27,8 +34,7 @@ public class GreetingController {
     @RequestMapping("/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
     	
-    	Security.addProvider(new BouncyCastleProvider());
-		log.info("BouncyCastle provider added.");
+    	
     	try {
     	
     	PublicKey publicKey = rsaCryto.generatePublicKey( new File("id_rsa.pub" ));

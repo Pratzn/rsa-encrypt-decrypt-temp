@@ -1,19 +1,22 @@
 package rsa;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-
-import rsa.filter.TokenAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
-@ComponentScan(basePackages= {"rsa"})
+@ComponentScan({"rsa"})
+@ServletComponentScan({"rsa","rsa.filter"})
 public class Application {
 
     public static void main(String[] args) {
@@ -21,20 +24,34 @@ public class Application {
     }
     
     @Configuration
-    @EnableWebSecurity
-    static class Config extends WebSecurityConfigurerAdapter{
+    @EnableWebMvc
+    static class Config {
+
+		
     	
-    	@Bean
-        public TokenAuthenticationFilter tokenAuthenticationFilter() throws Exception {
-            return new TokenAuthenticationFilter();
-        }
-
-        
-        @Override
-        protected void configure(HttpSecurity http) throws Exception{
-
-            http.addFilterBefore(tokenAuthenticationFilter(), BasicAuthenticationFilter.class);
-        }
+    }
+    
+    @Autowired
+    private ApplicationContext context;
+    
+    @Bean
+    public CommandLineRunner commandLineRunner() {
+    	return (args)->{
+    		
+//    		String[] names = context.getBeanDefinitionNames();
+//    		
+//    		Stream<String> stream = Arrays.stream(names);
+//    		
+//    		stream.parallel().forEach(System.out::println);
+//    		
+//    		for(String name:names) {
+//    			
+//    			System.out.println(name);
+//    			
+//    		}
+    		
+    	};
+    	
     	
     }
 }
