@@ -15,7 +15,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.security.Security;
+import java.security.Signature;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
@@ -47,30 +49,76 @@ public class RSACryto {
 		try {
 			
 			RSACryto rsaCryto = new RSACryto();
+			File id_rsa = new File("./id_rsa");
+			File id_rsa_pub = new File("./id_rsa.pub");
+
+			if (!id_rsa.exists() || !id_rsa_pub.exists()) {
+				rsaCryto.generateRSAKeypair(4096);
+			}
+
+			PrivateKey privateKey = rsaCryto.generatePrivateKey(id_rsa);
+
+			log.info(String.format("Instantiated private key: %s", privateKey));
+
+			PublicKey publicKey = rsaCryto.generatePublicKey(id_rsa_pub);
+
+			log.info(String.format("Instantiated public key: %s", publicKey));
+			
+			
+			SecureRandom secureRandom = new SecureRandom();
+			//Creating a Signature Instance                //SHA512withRSA
+			Signature signature = Signature.getInstance("SHA512withRSA");
+			//Initializing the Signature Instance
+			signature.initSign(privateKey, secureRandom);
+			
+			//Creating the Digital Signature
+			byte[] data = "data for signing".getBytes();
+			signature.update(data);
+
+			byte[] digitalSignature = signature.sign();
+			
+			//Verifying the Digital Signature
+			Signature signature2 = Signature.getInstance("SHA512withRSA");
+			signature2.initVerify(publicKey);
+			signature2.update(data);
+			boolean verified = signature2.verify(digitalSignature);
+			
+			log.info("verified: "+verified);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+	}
+
+	private static void test1() {
+		try {
+
+			RSACryto rsaCryto = new RSACryto();
 			File id_rsa = new File("id_rsa");
 			File id_rsa_pub = new File("id_rsa.pub");
 
 			if (!id_rsa.exists() || !id_rsa_pub.exists()) {
 				rsaCryto.generateRSAKeypair(4096);
 			}
-			
-			PrivateKey privateKey = rsaCryto.generatePrivateKey(id_rsa );
+
+			PrivateKey privateKey = rsaCryto.generatePrivateKey(id_rsa);
 
 			log.info(String.format("Instantiated private key: %s", privateKey));
 
-			PublicKey publicKey = rsaCryto.generatePublicKey( id_rsa_pub );
-			
+			PublicKey publicKey = rsaCryto.generatePublicKey(id_rsa_pub);
+
 			log.info(String.format("Instantiated public key: %s", publicKey));
-			
+
 			String message = "test ja";
-			
+
 			String encrypted = rsaCryto.encrypt(privateKey, message);
-			
-			log.info("encrypted: "+encrypted);
-			
+
+			log.info("encrypted: " + encrypted);
+
 			String decrypted = rsaCryto.decrypt(publicKey, encrypted);
-			
-			log.info("decrypted: "+decrypted);
+
+			log.info("decrypted: " + decrypted);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -91,8 +139,8 @@ public class RSACryto {
 		return new String(cipher.doFinal(cipherText));
 	}
 
-	public PrivateKey generatePrivateKey( File filename)
-			throws InvalidKeySpecException, FileNotFoundException, IOException, NoSuchAlgorithmException, NoSuchProviderException {
+	public PrivateKey generatePrivateKey(File filename) throws InvalidKeySpecException, FileNotFoundException,
+			IOException, NoSuchAlgorithmException, NoSuchProviderException {
 		KeyFactory factory = KeyFactory.getInstance("RSA", "BC");
 		PemFile pemFile = new PemFile(filename.getAbsolutePath());
 		byte[] content = pemFile.getPemObject().getContent();
@@ -100,8 +148,8 @@ public class RSACryto {
 		return factory.generatePrivate(privKeySpec);
 	}
 
-	public PublicKey generatePublicKey( File filename)
-			throws InvalidKeySpecException, FileNotFoundException, IOException, NoSuchAlgorithmException, NoSuchProviderException {
+	public PublicKey generatePublicKey(File filename) throws InvalidKeySpecException, FileNotFoundException,
+			IOException, NoSuchAlgorithmException, NoSuchProviderException {
 		KeyFactory factory = KeyFactory.getInstance("RSA", "BC");
 		PemFile pemFile = new PemFile(filename.getAbsolutePath());
 		byte[] content = pemFile.getPemObject().getContent();
@@ -125,8 +173,7 @@ public class RSACryto {
 
 	}
 
-	private void writePemFile(Key key, String description, String filename)
-			throws FileNotFoundException, IOException {
+	private void writePemFile(Key key, String description, String filename) throws FileNotFoundException, IOException {
 		PemFile pemFile = new PemFile(key, description);
 		pemFile.write(filename);
 		log.info(String.format("%s successfully writen in file %s.", description, filename));
