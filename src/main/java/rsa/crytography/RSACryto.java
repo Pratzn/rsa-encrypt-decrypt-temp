@@ -1,4 +1,4 @@
-package crytography;
+package rsa.crytography;
 
 import java.io.File;
 import java.io.FileInputStream;

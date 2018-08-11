@@ -1,4 +1,4 @@
-package hello;
+package rsa.entity;
 
 public class Greeting {
 

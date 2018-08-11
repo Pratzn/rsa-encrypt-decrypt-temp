@@ -1,4 +1,4 @@
-package hello;
+package rsa.controller;
 
 import java.io.File;
 import java.security.PublicKey;
@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import crytography.RSACryto;
+import rsa.crytography.RSACryto;
+import rsa.entity.Greeting;
 import lombok.extern.java.Log;
 @Log
 @RestController
