@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import rsa.crytography.RSACryto;
-import rsa.entity.Greeting;
 import lombok.extern.java.Log;
+import rsa.crytography.RSACryto;
+import rsa.entity.Entity;
 @Log
 @RestController
-public class GreetingController {
+public class RestAPIController {
 	
 	static {
 		
@@ -32,7 +32,7 @@ public class GreetingController {
     private RSACryto rsaCryto;
 
     @RequestMapping("/greeting")
-    public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
+    public Entity greeting(@RequestParam(value="name", defaultValue="World") String name) {
     	
     	
     	try {
@@ -42,7 +42,7 @@ public class GreetingController {
     	}catch(Exception e) {
     		e.printStackTrace();
     	}
-    	return new Greeting(counter.incrementAndGet(),
+    	return new Entity(counter.incrementAndGet(),
                             String.format(template, name));
     }
 }

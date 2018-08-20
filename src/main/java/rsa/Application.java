@@ -1,8 +1,5 @@
 package rsa;
 
-import java.util.Arrays;
-import java.util.stream.Stream;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,7 +9,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import rsa.interceptor.Interceptor;
 
 @SpringBootApplication
 @ComponentScan({"rsa"})
@@ -25,9 +27,17 @@ public class Application {
     
     @Configuration
     @EnableWebMvc
-    static class Config {
+    static class Config implements WebMvcConfigurer{
 
-		
+    	@Bean
+    	public AntPathMatcher antPathMatcher() {
+    		return new AntPathMatcher();
+    	}
+    	
+    	@Override
+        public void addInterceptors(final InterceptorRegistry registry) {
+            registry.addInterceptor(new Interceptor()).addPathPatterns("/*");
+        }
     	
     }
     
