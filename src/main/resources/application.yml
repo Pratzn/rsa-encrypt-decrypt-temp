@@ -5,12 +5,16 @@ spring:
     url: jdbc:hsqldb:mem:fscompdb
     data-username: sa
     data-password: 
+  application:  
+    name: rsa-encrypt-decrypt
     
 server:
   port: 8080
   servlet:
-    context-path: /rest-ssssapi
+    context-path: /rest-api
     
 logging:
-  path: .
-  file: rest-api.log
+ config: classpath:log4j.xml
+ file: rest-api.log
+ path: /opt/logs
+  
