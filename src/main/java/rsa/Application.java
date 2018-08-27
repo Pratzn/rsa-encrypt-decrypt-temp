@@ -1,20 +1,24 @@
 package rsa;
 
+import java.util.stream.IntStream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import rsa.interceptor.Interceptor;
+import rsa.service.AsynService;
 
 @SpringBootApplication
 @ComponentScan({"rsa"})
@@ -39,26 +43,27 @@ public class Application {
             registry.addInterceptor(new Interceptor()).addPathPatterns("/*");
         }
     	
+    	@Bean
+    	RestTemplate restTemplate() {
+    		return new RestTemplateBuilder().build();
+    	}
+    	
     }
     
     @Autowired
-    private ApplicationContext context;
+    private AsynService service;
+    
     
     @Bean
     public CommandLineRunner commandLineRunner() {
     	return (args)->{
+    		for(int i = 0 ; i < 5 ; i++) {
+    			System.out.println(Thread.currentThread().getName()+"asyn:"+i);
+    			service.asynMethod();
+    		}
     		
-//    		String[] names = context.getBeanDefinitionNames();
-//    		
-//    		Stream<String> stream = Arrays.stream(names);
-//    		
-//    		stream.parallel().forEach(System.out::println);
-//    		
-//    		for(String name:names) {
-//    			
-//    			System.out.println(name);
-//    			
-//    		}
+    		
+    		
     		
     	};
     	
